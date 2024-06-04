@@ -17,9 +17,9 @@ import Profile from './Profile';
 
 const navigation = {
   pages: [
-    { name: 'Home', href: '#' },
-    { name: 'About', href: '#' },
-    { name: 'Contact', href: '#' },
+    { name: 'Home', href: '/' },
+    { name: 'Genres', href: '/products' },
+
   ],
 }
 
@@ -49,6 +49,7 @@ export default function AppHeader() {
 
   const handleOpen = () => {
     setOpenAuthModal(true);
+    setOpen(false);
     navigate("/register")
   };
 
@@ -58,6 +59,7 @@ export default function AppHeader() {
 
   const handleProfile = () => {
     setProfileOpen(true); 
+    setOpen(false);
     handleCloseUserMenu(); 
   };
   
@@ -82,7 +84,17 @@ export default function AppHeader() {
   const handleLogout=()=>{
     dispatch(logout())
     handleCloseUserMenu();
+    setOpen(false);
    
+  }
+
+  const handleCart=()=>{
+    if (auth.user?.data?.username) {
+      navigate(`/cart`);
+    } else {
+    alert("You can't view an cart without an account...Register or Login first")
+    navigate(`/`)
+    }
   }
 
   const { cart} = useSelector((state) => state.cart);
@@ -90,106 +102,122 @@ export default function AppHeader() {
 
   return (
     <div className="bg-custom-white">
-      {/* Mobile menu */}
-      <Transition show={open}>
-        <Dialog className="relative z-40 lg:hidden" onClose={setOpen}>
-          <TransitionChild
-            enter="transition-opacity ease-linear duration-300"
-            enterFrom="opacity-0"
-            enterTo="opacity-100"
-            leave="transition-opacity ease-linear duration-300"
-            leaveFrom="opacity-100"
-            leaveTo="opacity-0"
+    {/* Mobile menu */}
+    <Transition show={open}>
+      <Dialog className="relative z-40 lg:hidden" onClose={setOpen}>
+        <Transition.Child
+          enter="transition-opacity ease-linear duration-300"
+          enterFrom="opacity-0"
+          enterTo="opacity-100"
+          leave="transition-opacity ease-linear duration-300"
+          leaveFrom="opacity-100"
+          leaveTo="opacity-0"
+        >
+          <div className="fixed inset-0 bg-custom-black bg-opacity-25" />
+        </Transition.Child>
+
+        <div className="fixed inset-0 z-40 flex">
+          <Transition.Child
+            enter="transition ease-in-out duration-300 transform"
+            enterFrom="-translate-x-full"
+            enterTo="translate-x-0"
+            leave="transition ease-in-out duration-300 transform"
+            leaveFrom="translate-x-0"
+            leaveTo="-translate-x-full"
           >
-            <div className="fixed inset-0 bg-custom-black bg-opacity-25" />
-          </TransitionChild>
+            <Dialog.Panel className="relative flex w-full max-w-xs flex-col overflow-y-auto bg-css-purple pb-12 shadow-xl">
+              <div className="flex px-4 pb-2 pt-5 justify-end">
+                <button
+                  type="button"
+                  className="relative -m-2 inline-flex items-center justify-center rounded-md p-2 text-custom-white hover:text-custom-black hover:bg-custom-white"
+                  onClick={() => setOpen(false)}
+                >
+                  <span className="absolute -inset-0.5" />
+                  <span className="sr-only">Close menu</span>
+                  <XMarkIcon className="h-6 w-6" aria-hidden="true" />
+                </button>
+              </div>
 
-          <div className="fixed inset-0 z-40 flex">
-            <TransitionChild
-              enter="transition ease-in-out duration-300 transform"
-              enterFrom="-translate-x-full"
-              enterTo="translate-x-0"
-              leave="transition ease-in-out duration-300 transform"
-              leaveFrom="translate-x-0"
-              leaveTo="-translate-x-full"
-            >
-              <DialogPanel className="relative flex w-full max-w-xs flex-col overflow-y-auto bg-css-purple pb-12 shadow-xl">
-                <div className="flex px-4 pb-2 pt-5 justify-end">
-                  <button
-                    type="button"
-                    className="relative -m-2 inline-flex items-center justify-center rounded-md p-2 text-custom-white hover:text-custom-black hover:bg-custom-white"
-                    onClick={() => setOpen(false)}
-                  >
-                    <span className="absolute -inset-0.5" />
-                    <span className="sr-only">Close menu</span>
-                    <XMarkIcon className="h-6 w-6 " aria-hidden="true" />
-                  </button>
+              <div className="space-y-6 text-custom-white px-4 py-6 text-center">
+                {navigation.pages.map((page) => (
+                  <div key={page.name} className="flow-root">
+                    <a
+                      href={page.href}
+                      className="-m-2 block p-2 font-medium text-custom-white hover:text-custom-black hover:bg-custom-white"
+                    >
+                      {page.name}
+                    </a>
+                  </div>
+                ))}
+              </div>
+
+              {auth.user?.data?.username ? (
+                <div className="space-y-6 px-4 py-6 text-center text-custom-white">
+                  <div className="flow-root">
+                    <Button
+                      onClick={handleProfile}
+                      sx={{
+                        width:'100%',
+                        fontSize:'15px',
+                        fontWeight: 'medium',
+                        color: 'white',
+                        '&:hover': {
+                          color: 'purple',
+                          backgroundColor: 'white',
+                        },
+                        textTransform: 'none',
+                      }}
+                    >
+                      Profile
+                    </Button>
+                  </div>
+                  <div className="flow-root">
+                    <Button
+                      onClick={handleLogout}
+                      sx={{
+                        width:'100%',
+                        fontSize:'15px',
+                        fontWeight: 'medium',
+                        color: 'white',
+                        '&:hover': {
+                          color: 'purple',
+                          backgroundColor: 'white',
+                          borderRadius:'0'
+                        },
+                        textTransform: 'none',
+                      }}
+                    >
+                      Logout
+                    </Button>
+                  </div>
                 </div>
-
-                <div className="space-y-6  text-custom-white px-4 py-6 text-center">
-                  {navigation.pages.map((page) => (
-                    <div key={page.name} className="flow-root">
-                      <a href={page.href} className="-m-2 block p-2 font-medium text-custom-white hover:text-custom-black hover:bg-custom-white">
-                        {page.name}
-                      </a>
-                    </div>
-                  ))}
+              ) : (
+                <div className=" px-4 py-1 text-center">
+                  <div className="flow-root">
+                    <Button
+                      onClick={handleOpen}
+                      sx={{
+                        width:'100%',
+                        fontSize:'15px',
+                        fontWeight: 'medium',
+                        color: 'white',
+                        '&:hover': {
+                          color: 'purple',
+                          backgroundColor: 'white',
+                        },
+                        textTransform: 'none',
+                      }}
+                    >
+                      SignUp
+                    </Button>
+                  </div>
                 </div>
-
-                {false ? (
-                    <div className="space-y-6  px-4 py-6 text-center text-custom-white ">
-                      <div className="flow-root">
-                        <a
-                          href="#"
-                          className="-m-2 block p-2 font-medium  hover:text-css-purple hover:bg-custom-white"
-                        >
-                          Profile
-                        </a>
-                      </div>
-                      <div className="flow-root">
-                        <a
-                          href="#"
-                          className="-m-2 block p-2 font-medium  hover:text-css-purple hover:bg-custom-white"
-                        >
-                          My Orders
-                        </a>
-                      </div>
-                      <div className="flow-root">
-                        <a
-                          href="#"
-                          className="-m-2 block p-2 font-medium  hover:text-css-purple hover:bg-custom-white"
-                        >
-                          Logout
-                        </a>
-                      </div>
-                    </div>
-                  ) : (
-                    <div className="space-y-6  px-4 py-6 text-center">
-                      <div className="flow-root">
-                        <a
-                          href=""
-                          className="-m-2 block p-2 font-medium  hover:text-css-purple hover:bg-custom-white"
-                        >
-                          Sign in
-                        </a>
-                     
-                      </div>
-                      <div className="flow-root">
-                        <a
-                          href="#"
-                          className="-m-2 block p-2 font-medium  hover:text-css-purple hover:bg-custom-white"
-                        >
-                          Create account
-                        </a>
-                      </div>
-                    </div>
-                  )}
-
-                </DialogPanel>
-            </TransitionChild>
-          </div>
-        </Dialog>
-      </Transition>
+              )}
+            </Dialog.Panel>
+          </Transition.Child>
+        </div>
+      </Dialog>
+    </Transition>
 
       <header className="relative bg-custom-white">
         {/* Header content */}
@@ -263,8 +291,8 @@ export default function AppHeader() {
                         <MenuItem onClick={handleProfile}>
                           Profile
                         </MenuItem>
-                        <MenuItem onClick={handleCloseUserMenu}>
-                          My Orders
+                        <MenuItem onClick={()=>navigate(`/products`)}>
+                          Genres
                         </MenuItem>
                         <MenuItem onClick={handleLogout}>
                           Logout
@@ -284,7 +312,7 @@ export default function AppHeader() {
 
                 {/* Search */}
                 <div className="flex lg:ml-6">
-                  <a href="#" className="p-2 text-custom-black hover:text-css-purple">
+                  <a href="/search" className="p-2 text-custom-black hover:text-css-purple">
                     <span className="sr-only">Search</span>
                     <MagnifyingGlassIcon className="h-6 w-6" aria-hidden="true" />
                   </a>
@@ -292,14 +320,14 @@ export default function AppHeader() {
 
                 {/* Cart */}
                 <div className="ml-4 flow-root lg:ml-6">
-                  <a href='/cart' className="group -m-2 flex items-center p-2">
+                  <Button onClick={handleCart} className="group -m-2 flex items-center p-2">
                     <ShoppingBagIcon
                       className="h-6 w-6 flex-shrink-0 text-custom-black group-hover:text-css-purple"
                       aria-hidden="true"
                     />
                     <span className="ml-1top-0 text-sm font-medium text-custom-black group-hover:text-css-purple">{cart?.totalItem}</span>
                     <span className="sr-only">items in cart, view bag</span>
-                  </a>
+                  </Button>
                 </div>
               </div>
             </div>

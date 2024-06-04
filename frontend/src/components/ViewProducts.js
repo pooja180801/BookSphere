@@ -11,7 +11,7 @@ const ViewProducts = ({ book }) => {
 
 
   return (
-    <div className="cursor-pointer flex flex-col items-center bg-white rounded-lg shadow-lg overflow-hidden w-[14rem] mx-auto border border-black hover:shadow-custom-hover">
+    <div className="cursor-pointer flex flex-col items-center bg-white rounded-lg shadow-lg overflow-hidden w-[14rem] mx-auto border border-black hover:shadow-custom-hover m-6">
       <div className="relative h-[17rem] w-[12rem]">
         <div className="absolute top-[13px] left-[3px] bg-custom-whitesmoke text-css-purple font-bold text-[18px] rounded-[0.5rem] p-[0.5rem]">
           Rs.{book.bookprice}

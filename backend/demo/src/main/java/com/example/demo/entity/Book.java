@@ -1,6 +1,5 @@
 package com.example.demo.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -19,7 +18,7 @@ public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "book_id")
-    private int bookid;
+    private int bookId;
 
 
     @NotBlank(message = "Book name cannot be empty")
@@ -62,12 +61,12 @@ public class Book {
         this.author = author;
     }
 
-    public int getBookid() {
-        return bookid;
+    public int getBookId() {
+        return bookId;
     }
 
-    public void setBookid(int bookid) {
-        this.bookid = bookid;
+    public void setBookId(int bookId) {
+        this.bookId = bookId;
     }
 
     public String getBookname() {

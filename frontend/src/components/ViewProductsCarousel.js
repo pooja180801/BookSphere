@@ -47,7 +47,7 @@ const ViewProductsCarousel = ({ genre, books }) => {
 
 
   return (
-    <div className="relative px-4 lg:px-4 mt-8">
+    <div className="relative px-4 lg:px-4 mt-8 bg-custom-whitesmoke">
       <h2 className='text-4xl font-extrabold text-css-purple py-5 text-center'>{genre}</h2>
       <div className='relative p-5'>
       <button style={buttonPrevStyle} onClick={() => carouselRef.current.slidePrev()}>

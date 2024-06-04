@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 const DeliveryAddressForm = () => {
 
   const dispatch=useDispatch();
+  const navigate=useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -24,7 +25,8 @@ const DeliveryAddressForm = () => {
     }
   
 
-      dispatch(createOrder(address));
+      const orderData={address,navigate}
+      dispatch(createOrder(orderData));
 
     console.log(address)
 

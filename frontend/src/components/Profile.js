@@ -9,7 +9,7 @@ const Profile = ({ open, setOpen }) => {
   console.log("open",open)
 
   if (!user) {
-    return <div>Loading...</div>;
+    return <div></div>;
   }
   const data = user.data;
 
@@ -42,7 +42,7 @@ const Profile = ({ open, setOpen }) => {
               leaveFrom="opacity-100 translate-y-0 sm:scale-100"
               leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
             >
-              <Dialog.Panel className="w-[25rem] h-20rem] max-w-md transform overflow-hidden rounded-lg bg-custom-whitesmoke p-6 text-left align-middle shadow-xl transition-all">
+              <Dialog.Panel className="w-[25rem] h-20rem] max-w-md transform overflow-hidden rounded-lg bg-custom-whitesmoke p-6 text-left align-middle shadow-xl transition-all z-1000">
                 <div className="relative">
                   <Grid item xs={12} lg={7}>
                     <Box className='rounded-md shadow-md p-5 bg-custom-whitesmoke'>

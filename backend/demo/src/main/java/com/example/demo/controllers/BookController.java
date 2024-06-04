@@ -55,8 +55,9 @@ public class BookController {
         return bookService.filterByGenre();
     }
 
-    @GetMapping("/search")
-    public ResponseEntity<APIresponse> searchBook(@RequestParam String bookname){
+    @GetMapping("/search/{searchKey}")
+    public ResponseEntity<APIresponse> searchBook(@PathVariable("searchKey") String bookname){
+        System.out.println(bookname);
         return bookService.searchProductsByBookName(bookname);
 
     }

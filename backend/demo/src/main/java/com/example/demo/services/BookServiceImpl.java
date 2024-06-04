@@ -10,7 +10,6 @@ import com.example.demo.entity.Genre;
 import com.example.demo.exceptions.BookNotFoundException;
 import com.example.demo.exceptions.GenreNotFoundException;
 import com.example.demo.exceptions.IllegalArgumentException;
-import com.example.demo.exceptions.UserAlreadyExistsException;
 import com.example.demo.repo.BookRepository;
 import com.example.demo.repo.GenreRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -141,7 +140,7 @@ public class BookServiceImpl implements BookService{
     @Override
     public BookDto toDto(Book book) {
         BookDto bookDto=new BookDto();
-        bookDto.setBookId(book.getBookid());
+        bookDto.setBookId(book.getBookId());
         bookDto.setBookname(book.getBookname());
         bookDto.setBookdesc(book.getBookdesc());
         bookDto.setBookprice(book.getBookprice());
@@ -230,9 +229,10 @@ public class BookServiceImpl implements BookService{
     }
 
     public ResponseEntity<APIresponse> searchProductsByBookName(String bookname) {
+        APIresponse response=new APIresponse();
         List<Book> books=bookRepository.findByBooknameContainingIgnoreCase(bookname);
-        if(books!=null){
-            APIresponse response=new APIresponse();
+        if(books!=null&& !books.isEmpty()){
+
             response.setStatus(HttpStatus.OK.value());
             response.setData(books);
         }

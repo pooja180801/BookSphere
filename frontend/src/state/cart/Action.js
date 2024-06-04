@@ -7,11 +7,12 @@ import {
 } from "./ActionType";
 
 
-export const addItemToCart = (reqData) =>async (dispatch) => {
+export const addItemToCart = (bookId) =>async (dispatch) => {
     dispatch({ type: ADD_ITEM_TO_CART_REQUEST });
+    console.log("checkinggggggg",bookId)
     try {
-        console.log("req",reqData)
-        const { data } = await api.put('/cart/add', reqData);
+        const  data  = await api.put('/cart/add', bookId);
+        console.log("req",data)
         dispatch({ type: ADD_ITEM_TO_CART_SUCCESS, payload: data });
     } catch (error) {
         dispatch({ type: ADD_ITEM_TO_CART_FAILURE, payload: error.message });
@@ -21,6 +22,7 @@ export const addItemToCart = (reqData) =>async (dispatch) => {
 
 export const getCart = () => async (dispatch) => {
     dispatch({ type: GET_CART_REQUEST });
+    console.log("api",api)
     try {
         const response = await api.get('/cart/');
         const data=response.data.data
