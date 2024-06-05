@@ -3,6 +3,9 @@ BookSphere
 This repository contains the source code for a full-stack web application - a Bookstore, where users can browse books categorized based on genres, view book details, add books to the cart, checkout, view order summary, confirm orders, and view profile details. The application is built using React, Spring Boot, JSON Web Tokens (JWT), Tailwind CSS, and Material-UI (MUI), ensuring responsiveness across various devices.
 
 
+
+
+
 Features
 
 Browse Books: Users can explore a wide range of books categorized based on genres.
@@ -18,6 +21,12 @@ Order Summary: Provides a summary of the user's order before confirming the purc
 Order Confirmation: Confirmation page displaying details of the completed order.
 
 View Profile: Users can view and edit their profile details.
+
+
+
+
+
+
 
 
 
