@@ -22,6 +22,10 @@ View Profile: Users can view and edit their profile details.
 
 
 Project Structure
+
+
 /frontend: Contains the source code for the React frontend of the application.
+
+
 /backend: Contains the source code for the Spring Boot backend of the application.
 
