@@ -6,7 +6,7 @@ import {
   Transition,
   TransitionChild,
 } from '@headlessui/react'
-import { getUser, logout } from '../state/Authorization/Action';
+import { clearCart, getUser, logout } from '../state/Authorization/Action';
 
 import { Bars3Icon, MagnifyingGlassIcon, ShoppingBagIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import { Avatar, Button, Menu, MenuItem } from '@mui/material';
@@ -62,6 +62,11 @@ export default function AppHeader() {
     setOpen(false);
     handleCloseUserMenu(); 
   };
+
+  const handleRegister=()=>{
+    setOpen(false);
+    navigate(`/register`)
+  }
   
 
   useEffect(() => {
@@ -92,8 +97,7 @@ export default function AppHeader() {
     if (auth.user?.data?.username) {
       navigate(`/cart`);
     } else {
-    alert("You can't view an cart without an account...Register or Login first")
-    navigate(`/`)
+    setOpenAuthModal(true)
     }
   }
 
@@ -195,7 +199,7 @@ export default function AppHeader() {
                 <div className=" px-4 py-1 text-center">
                   <div className="flow-root">
                     <Button
-                      onClick={handleOpen}
+                      onClick={()=>navigate(`/register`)}
                       sx={{
                         width:'100%',
                         fontSize:'15px',
@@ -301,7 +305,7 @@ export default function AppHeader() {
                     </div>
                   ) : (
                     <Button
-                      onClick={handleOpen}
+                      onClick={()=>navigate(`/register`)}
                       className='text-sm font-medium text-custom-gray-500 hover:text-css-purple'
                       style={{ textTransform: 'none', color: 'GrayText' }}
                     >
@@ -335,7 +339,6 @@ export default function AppHeader() {
         </nav>
       </header>
 
-      <AuthModal handleClose={handleClose} open={openAuthModal} />
       <Profile open={profileOpen} setOpen={setProfileOpen} />
       
     </div>

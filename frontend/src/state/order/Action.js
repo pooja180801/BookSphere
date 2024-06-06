@@ -6,6 +6,9 @@ import {
     GET_ORDER_BY_ID_REQUEST,
     GET_ORDER_BY_ID_SUCCESS,
     GET_ORDER_BY_ID_FAILURE,
+    CONFIRM_ORDER_SUCCESS,
+    CONFIRM_ORDER_FAILURE,
+    CLEAR_CART
   } from "./ActionType";
   
   export const createOrder = (reqData) => async (dispatch) => {
@@ -18,7 +21,6 @@ import {
       if(data.data.data.id){
     
         reqData.navigate(`/checkout/orderSummary/${data.data.data.id}`);
-        console.log("clickeddd")
       }
 
       dispatch({ type: CREATE_ORDER_SUCCESS, payload: data.data });
@@ -33,9 +35,23 @@ import {
 
     try {
       const response = await api.get(`/order/${orderId}`);
+
       dispatch({ type: GET_ORDER_BY_ID_SUCCESS, payload: response.data });
     } catch (error) {
       dispatch({ type: GET_ORDER_BY_ID_FAILURE, payload: error.message });
     }
   };
   
+
+  export const confirmOrder=(orderId)=> async (dispatch) =>{
+    dispatch({type:CONFIRM_ORDER_SUCCESS});
+
+    try {
+      console.log("orderiddd",orderId)
+      const response=await api.post(`/order/confirm/${orderId}`)
+      dispatch({type:CONFIRM_ORDER_SUCCESS,payload:response})
+      console.log("123checkingg",response)
+    } catch (error) {
+      dispatch({type:CONFIRM_ORDER_FAILURE,payload:error.message})
+    }
+  }

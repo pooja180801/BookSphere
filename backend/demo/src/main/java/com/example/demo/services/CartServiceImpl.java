@@ -5,6 +5,7 @@ import com.example.demo.entity.Book;
 import com.example.demo.entity.Cart;
 import com.example.demo.entity.CartItem;
 import com.example.demo.entity.User;
+import com.example.demo.exceptions.CartItemException;
 import com.example.demo.repo.CartItemRepository;
 import com.example.demo.repo.CartRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -84,7 +85,14 @@ public class CartServiceImpl implements CartService{
         Cart cart = cartRepository.findByUserUserId(userId);
         if (cart != null) {
             Set<CartItem> cartItems = cart.getCartItems();
+
             cartItemRepository.deleteAll(cartItems);
+            cart.getCartItems().clear();
+            cart.setTotalPrice(0);
+            cart.setTotalItem(0);
+            cartRepository.save(cart);
+        } else {
+            throw new CartItemException("No cart found for user with ID " + userId);
         }
     }
 }

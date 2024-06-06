@@ -7,8 +7,10 @@ import {
     LOGIN_FAILURE,
     GET_USER_REQUEST,
     GET_USER_SUCCESS,
-    GET_USER_FAILURE
+    GET_USER_FAILURE,
   } from './ActionType';
+
+  import { clearCart } from "../cart/Action";
 
 const token=localStorage.getItem("token");
 
@@ -25,6 +27,7 @@ const registerFailure=(error)=>({
 })
 
 export const register=(userData)=>async (dispatch)=>{
+    dispatch(clearCart())
     dispatch(registerRequest())
     try {
         const response=await axios.post(`${API_BASE_URL}/user/signup`,userData)
@@ -35,6 +38,7 @@ export const register=(userData)=>async (dispatch)=>{
         }
         console.log("user",user)
         dispatch(registerSuccess(user.token))
+        window.location.reload();
     } catch (error) {
         dispatch(registerFailure(error.message))
     }
@@ -55,7 +59,9 @@ const loginFailure=(error)=>({
 })
 
 export const login=(userData)=>async (dispatch)=>{
+    dispatch(clearCart())
     dispatch(loginRequest())
+    
     try {
         const response=await axios.post(`${API_BASE_URL}/user/signin`,userData)
         const user=response.data;
@@ -65,8 +71,16 @@ export const login=(userData)=>async (dispatch)=>{
         }
         console.log("user",user)
         dispatch(loginSuccess(user.token))
+        window.location.reload();
     } catch (error) {
-        dispatch(loginFailure(error.message))
+        if (error.response) {
+            const errorMessage = error.response.data.error;
+            console.log("Server responded with error:", errorMessage);
+            dispatch(loginFailure(errorMessage));
+        } else {
+            console.log("Error setting up the request:", error.message);
+            dispatch(loginFailure("Error setting up the request"));
+        }
     }
 }
 
@@ -101,9 +115,14 @@ export const getUser=(token)=>async (dispatch)=>{
 }
 
 
+
 export const logout=()=>(dispatch)=>{
-    dispatch({type:LOGOUT,payload:null})
+    dispatch(clearCart());
     localStorage.clear();
+    dispatch({type:LOGOUT,payload:null})
+    window.location.reload();
+
+
 }
 
 

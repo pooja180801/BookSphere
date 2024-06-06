@@ -64,7 +64,7 @@ export default function Cart() {
                       <div className="mt-8">
                         <div className="flow-root">
                           <ul role="list" className="-my-6 divide-y divide-gray-200">
-                          {cart.cart.cartItems?.map((product) => (
+                          {cart?.cart?.cartItems?.map((product) => (
                             
                             <CartItem product={product} />
                              ))}

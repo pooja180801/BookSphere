@@ -238,7 +238,7 @@ public class BookServiceImpl implements BookService{
         }
         else{
             response.setStatus(HttpStatus.NOT_FOUND.value());
-            response.setData("No products found with that search!!!");
+            response.setMessage("No products found with that search!!!");
         }
         return ResponseEntity.status(response.getStatus()).body(response);
     }

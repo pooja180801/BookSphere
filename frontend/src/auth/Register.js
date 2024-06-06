@@ -2,13 +2,32 @@ import React, { useEffect, useState } from 'react';
 import { Box, Button, Grid, TextField } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { getUser, register } from '../state/Authorization/Action';
+import { clearCart, getUser, register } from '../state/Authorization/Action';
+import { getCart } from '../state/cart/Action';
+
+
+
+const style = {
+
+  top: '50%',
+  left: '50%',
+  width: 400,
+  bgcolor: 'whitesmoke',
+  borderRadius: 8,
+  boxShadow: 24,
+  pt: 2,
+  px: 3,
+  pb: 3,
+};
 
 const Register = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const token = localStorage.getItem("token");
   const { auth } = useSelector(store => store);
+
+  
+  
 
   const [formData, setFormData] = useState({
     username: '',
@@ -19,6 +38,7 @@ const Register = () => {
   const [errors, setErrors] = useState({});
 
   const handleChange = (e) => {
+    
     const { name, value } = e.target;
     setFormData({
       ...formData,
@@ -56,7 +76,6 @@ const Register = () => {
     }
 
     setErrors(validationErrors);
-    console.log(validationErrors);
 
     if (Object.keys(validationErrors).length === 0) {
       const userData = {
@@ -65,14 +84,19 @@ const Register = () => {
         password: formData.password
       };
 
-      dispatch(register(userData))
-      console.log("userData", userData);
+
+      dispatch(register(userData));
+      dispatch(getCart())
+      navigate(`/home`)
+     
     }
   };
 
   return (
-    <Grid item xs={12} lg={7}>
-      <Box className='rounded-s-md shadow-md p-5'>
+    <Grid container justifyContent="center" alignItems="center" style={{ minHeight: '100vh' }}>
+      <Grid item xs={12} lg={7} container justifyContent="center" alignItems="center">
+      <Box sx={style} className='rounded-s-md shadow-md p-5'>
+      <h2 className="text-center text-css-purple text-2xl mb-4">Register</h2>
         <form onSubmit={handleRegister}>
           <Grid container spacing={2}>
             <Grid item xs={12}>
@@ -131,6 +155,7 @@ const Register = () => {
           </div>
         </div>
       </Box>
+    </Grid>
     </Grid>
   );
 };

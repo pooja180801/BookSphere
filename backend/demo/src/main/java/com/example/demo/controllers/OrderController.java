@@ -46,4 +46,16 @@ public class OrderController {
 
         return ResponseEntity.status(response.getStatus()).body(response);
     }
+
+    @PostMapping("/confirm/{orderId}")
+    public ResponseEntity<Order> confirmOrder(
+            @PathVariable("orderId") Integer orderId,
+            @RequestHeader("Authorization") String authHeader){
+        User user=userService.getUserFromJwt(authHeader);
+
+        Order confirmedOrder = orderService.confirmedOrder(orderId, user.getUserId());
+        return ResponseEntity.ok(confirmedOrder);
+    }
+
+
 }

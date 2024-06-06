@@ -1,18 +1,27 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getOrderById } from '../state/order/Action';
-import { useParams } from 'react-router-dom';
-import { Link } from 'react-router-dom';
+import { confirmOrder, getOrderById } from '../state/order/Action';
+import { Navigate, useNavigate, useParams } from 'react-router-dom';
+import { Button } from '@mui/material';
 
 const OrderSummary = () => {
   const dispatch = useDispatch();
   const params = useParams();
+  const navigate=useNavigate();
+
+  const data = { orderId: params.orderId };
+
 
   useEffect(() => {
     const data = { orderId: params.orderId };
     dispatch(getOrderById(data));
   }, [dispatch, params.orderId]);
 
+  const handleConfirmOrder=()=>{
+    console.log("bts",params.orderId)
+    dispatch(confirmOrder(params.orderId));
+    navigate('/checkout/orderSummary/:orderId/orderConfirmation' )
+  }
   const { loading, order, error } = useSelector((state) => state.order);
   console.log("order", order);
 
@@ -48,12 +57,13 @@ const OrderSummary = () => {
       </div>
       </div>
       <div className='flex items-center justify-center'>
-       <Link
-                          to='/checkout/orderSummary/:orderId/orderConfirmation'
+       <Button
+       
+                        onClick={handleConfirmOrder}
                           className="w-[12rem] flex items-center justify-center rounded-md border border-transparent bg-css-purple text-custom-white px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700"
                         >
                           Confirm Order
-                        </Link>
+                        </Button>
                         </div>
     </div>
   );

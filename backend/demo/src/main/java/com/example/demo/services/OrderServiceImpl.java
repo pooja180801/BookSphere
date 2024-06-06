@@ -85,20 +85,15 @@ public class OrderServiceImpl implements OrderService{
         return optionalOrder;
     }
 
-    @Override
-    public Order placedOrder(Integer orderId) {
-        Order order=findOrderById(orderId);
-        order.setOrderStatus("Placed");
-
-        return orderRepository.save(order);
-    }
 
     @Override
-    public Order confirmedOrder(Integer orderId) {
+    public Order confirmedOrder(Integer orderId,Integer userid) {
         Order order=findOrderById(orderId);
         order.setOrderStatus("confirmed");
+        orderRepository.save(order);
+        cartService.clearCart(userid);
 
-        return orderRepository.save(order);
+        return order;
     }
 
 

@@ -19,9 +19,11 @@ import ProductRender from '../components/ProductRender';
 const CustomerRoute = () => {
   const location = useLocation();
 
-  const showHomePage = location.pathname !== '/checkout' && !location.pathname.startsWith('/checkout') 
-  && !location.pathname.startsWith('/search') && !location.pathname.startsWith('/products');
-
+  const showHomePage = !location.pathname.startsWith('/checkout') 
+    && !location.pathname.startsWith('/search') 
+    && !location.pathname.startsWith('/products') 
+    && !location.pathname.startsWith('/register')
+    && !location.pathname.startsWith('/login');
 
   return (
     <div>
@@ -29,11 +31,9 @@ const CustomerRoute = () => {
       {showHomePage && <HomePage />}
 
       <Routes>
-
         <Route path="products" element={<ProductRender />} />
-        <Route path="/register" element={<HomePage />} />
-        <Route path="/home" element={<HomePage />} />
-        <Route path="/login" element={<HomePage />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/login" element={<Login />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/viewProduct/:productId" element={<ProductDetails />} />
         <Route path="/checkout" element={<DeliveryAddressForm />} />
@@ -41,8 +41,6 @@ const CustomerRoute = () => {
         <Route path="/checkout/orderSummary/:orderId" element={<OrderSummary />} />
         <Route path="/search" element={<Search />} />
         <Route path="/checkout/orderSummary/:orderId/orderConfirmation" element={<OrderConfirmation />} />
-        
-
       </Routes>
       <Footer />
     </div>

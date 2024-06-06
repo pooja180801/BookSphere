@@ -6,16 +6,21 @@ import ViewProducts from './ViewProducts';
 
 const Search = () => {
   const [searchKey, setSearchKey] = useState('');
+  const [searchClicked, setSearchClicked] = useState(false);
   const dispatch = useDispatch();
 
   const { loading, products, error } = useSelector(state => state.products);
 
   const handleSearch = (e) => {
     e.preventDefault();
+    products.data=null
     const searchKey = document.getElementById("search").value;
     if (searchKey) {
       setSearchKey(searchKey);
       dispatch(searchProducts(searchKey));
+      setSearchClicked(true);
+    } else {
+      setSearchClicked(false);
     }
   };
 
@@ -43,11 +48,20 @@ const Search = () => {
         </div>
       </div>
 
-      <div className="w-full mt-4 flex flex-wrap justify-center">
-        {products?.data?.map((book, index) => (
-          <ViewProducts key={index} book={book}/>
-        ))}
+      <div>
+        {searchClicked && !loading && !products?.data?.length && ( 
+          <div style={{ textAlign: 'center', fontSize: '18px', color: 'gray', marginTop: '10px' }}>No products found</div>
+        )}
+
+        {products?.data?.length ? (
+          <div className="w-full mt-4 flex flex-wrap justify-center">
+            {products.data.map((book, index) => (
+              <ViewProducts key={index} book={book} />
+            ))}
+          </div>
+        ) : null}
       </div>
+
     </div>
   );
 };

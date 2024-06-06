@@ -14,8 +14,7 @@ public interface OrderService {
 
     public Order findOrderById(Integer orderId);
 
-    public Order placedOrder(Integer orderId);
-    public Order confirmedOrder(Integer orderId);
+    public Order confirmedOrder(Integer orderId,Integer userid);
 
 
 
