@@ -97,7 +97,7 @@ export default function AppHeader() {
     if (auth.user?.data?.username) {
       navigate(`/cart`);
     } else {
-    setOpenAuthModal(true)
+    navigate(`/register`)
     }
   }
 
@@ -199,7 +199,7 @@ export default function AppHeader() {
                 <div className=" px-4 py-1 text-center">
                   <div className="flow-root">
                     <Button
-                      onClick={()=>navigate(`/register`)}
+                      onClick={handleRegister}
                       sx={{
                         width:'100%',
                         fontSize:'15px',
