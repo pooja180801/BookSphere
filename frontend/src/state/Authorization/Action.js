@@ -69,9 +69,8 @@ export const login=(userData)=>async (dispatch)=>{
         if(user.token){
             localStorage.setItem("token",user.token)
         }
-        console.log("user",user)
         dispatch(loginSuccess(user.token))
-        window.location.reload();
+        window.location.reload(); 
     } catch (error) {
         if (error.response) {
             const errorMessage = error.response.data.error;

@@ -1,15 +1,15 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Box, Grid, Button, TextField } from '@mui/material';
-import { Navigate, useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import { clearCart, login } from '../state/Authorization/Action';
-import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { login, clearCart } from '../state/Authorization/Action';
 import { getCart } from '../state/cart/Action';
 
-const Login =  () => {
+const Login = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const { error } = useSelector(state => state.auth);
+    const { error,success } = useSelector(state => state.auth);
+    const [loginError, setLoginError] = useState(null);
 
     const handleSubmit = async(e) => {
         e.preventDefault();
@@ -19,9 +19,17 @@ const Login =  () => {
             password: formData.get("password")
         };
 
-        await dispatch(login(userData));
-        await dispatch(getCart());
-        navigate(`/home`);
+        try {
+            await dispatch(login(userData));
+            if (success) { 
+                await dispatch(getCart());
+                navigate(`/home`);
+            } else {
+                setLoginError("Login unsuccessful. Please check your credentials and try again.");
+            }
+        } catch (error) {
+            setLoginError("An error occurred during login. Please try again.");
+        }
     };
 
     const style = {
@@ -41,7 +49,8 @@ const Login =  () => {
             <Box sx={style} className='rounded-s-md shadow-md p-5'>
             <h2 className="text-center text-css-purple text-2xl mb-4">Login</h2>
                 <form onSubmit={handleSubmit}>
-                    {error && <div style={{ color: 'red', fontSize: '14px', marginTop: '5px' }}>{error}</div>}
+                    
+                    {loginError && <div style={{ color: 'red', fontSize: '14px', marginTop: '5px' }}>{loginError}</div>}
 
                     <Grid container spacing={2}>
                         <Grid item xs={12}>
@@ -82,7 +91,7 @@ const Login =  () => {
                 </div>
             </Box>
         </Grid>
-        </Grid>
+      </Grid>
     );
 };
 
