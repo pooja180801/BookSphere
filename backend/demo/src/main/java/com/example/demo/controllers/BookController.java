@@ -66,10 +66,4 @@ public class BookController {
     public List<Book> findBooksByGenreOrderedByPrice(@RequestParam(value = "bookgenre") String genre){
         return bookService.findBooksByNameOrderedByPrice(genre);
     }
-
-    @GetMapping("/paging")
-    public ResponseEntity<APIresponse> pagination(@SortDefault(sort = "bookid",direction = Sort.Direction.DESC) Pageable pageable) {
-        return bookService.pagination(pageable);
-    }
-
 }
