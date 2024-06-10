@@ -62,8 +62,5 @@ public class BookController {
 
     }
 
-    @GetMapping("/bookpriceAsnc")
-    public List<Book> findBooksByGenreOrderedByPrice(@RequestParam(value = "bookgenre") String genre){
-        return bookService.findBooksByNameOrderedByPrice(genre);
-    }
+ 
 }
