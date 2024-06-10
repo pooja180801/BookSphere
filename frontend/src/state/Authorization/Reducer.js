@@ -5,7 +5,8 @@ const initialState={
     user:null,
     isLoading:null,
     error:null,
-    token:null
+    token:null,
+    success:false
 
 }
 
@@ -18,7 +19,7 @@ export const authReducer=(state=initialState,action)=>{
 
         case REGISTER_SUCCESS:
         case LOGIN_SUCCESS:
-        return{...state,isLoading:false,error:null,loggedIn: true,token:action.payload}
+        return{...state,isLoading:false,error:null,loggedIn: true,token:action.payload,success:true}
 
         case GET_USER_SUCCESS:
         return{...state,isLoading:false,error:null,user:action.payload}
