@@ -12,8 +12,17 @@ const ProductRender = () => {
 
   const { loading, productsByGenre, error } = useSelector(state => state.products);
 
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error}</div>;
+  if (loading) return <div className=' h-[100svh] flex items-center justify-center p-3'>
+  <p className=' text-center'>
+  Loading!!!
+  </p>
+  </div>;
+
+  if (error) return <div className=' h-[100svh] flex items-center justify-center p-3'>
+    <p className=' text-center'>
+    Something went wrong, Failed to load products. Please try again later!!!!
+    </p>
+    </div>;
 
   if (!productsByGenre) return null;
 
