@@ -5,9 +5,11 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { getCart, updateCartItem } from '../state/cart/Action';
 import CartItem from './CartItem';
+import { Snackbar, Alert } from '@mui/material';
 
 export default function Cart() {
   const [open, setOpen] = useState(true);
+  const [showNotification, setShowNotification] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -20,6 +22,13 @@ export default function Cart() {
 
   const handleClose = () => {
     setOpen(false);
+  };
+
+  const handleRemoveNotification = () => {
+    setShowNotification(true);
+    setTimeout(() => {
+      setShowNotification(false);
+    }, 3000);
   };
 
 
@@ -64,10 +73,13 @@ export default function Cart() {
                       <div className="mt-8">
                         <div className="flow-root">
                           <ul role="list" className="-my-6 divide-y divide-gray-200">
-                          {cart?.cart?.cartItems?.map((product) => (
-                            
-                            <CartItem product={product} />
-                             ))}
+                          {cart?.cart?.cartItems?.length > 0 ? (
+                              cart.cart.cartItems.map((product, index) => (
+                                <CartItem key={index} product={product} onRemove={handleRemoveNotification}/>
+                              ))
+                            ) : (
+                              <p className=' h-[100svh] flex items-top justify-center p-3'>Your cart is empty.</p>
+                            )}
                           </ul>
                         </div>
                       </div>
@@ -108,6 +120,19 @@ export default function Cart() {
           </div>
         </div>
       </Dialog>
+
+      <Snackbar
+        open={showNotification}
+        autoHideDuration={3000}
+        onClose={() => setShowNotification(false)}
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+      >
+        <Alert onClose={() => setShowNotification(false)} severity="info">
+          Item removed from cart
+        </Alert>
+      </Snackbar>
+
+
     </Transition>
   );
 }
