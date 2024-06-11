@@ -1,124 +1,196 @@
 import { Box, Grid, TextField } from '@mui/material';
-import React, { useEffect } from 'react';
+import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { createOrder } from '../state/order/Action';
 import { useNavigate } from 'react-router-dom';
 
 const DeliveryAddressForm = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-  const dispatch=useDispatch();
-  const navigate=useNavigate();
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [address, setAddress] = useState('');
+  const [city, setCity] = useState('');
+  const [district, setDistrict] = useState('');
+  const [postalCode, setPostalCode] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
+
+  const [firstNameError, setFirstNameError] = useState('');
+  const [lastNameError, setLastNameError] = useState('');
+  const [addressError, setAddressError] = useState('');
+  const [cityError, setCityError] = useState('');
+  const [districtError, setDistrictError] = useState('');
+  const [postalCodeError, setPostalCodeError] = useState('');
+  const [phoneNumberError, setPhoneNumberError] = useState('');
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Form submitted!");
-    const data = new FormData(e.currentTarget);
 
-    const address = {
-      firstName: data.get("firstname"),
-      lastName: data.get("lastname"),
-      address: data.get("address"),
-      city: data.get("city"),
-      district: data.get("district"),
-      postalcode: data.get("postalcode"),
-      phoneNum: data.get("phoneNumber"),
+    setFirstNameError('');
+    setLastNameError('');
+    setAddressError('');
+    setCityError('');
+    setDistrictError('');
+    setPostalCodeError('');
+    setPhoneNumberError('');
+
+
+    if (!firstName.trim()) {
+      setFirstNameError('First Name is required');
+      return;
     }
-  
 
-      const orderData={address,navigate}
-      dispatch(createOrder(orderData));
+    if (!lastName.trim()) {
+      setLastNameError('Last Name is required');
+      return;
+    }
 
-    console.log(address)
+    if (!address.trim()) {
+      setAddressError('Address is required');
+      return;
+    }
 
-  }
+    if (!city.trim()) {
+      setCityError('City is required');
+      return;
+    }
+
+    if (!district.trim()) {
+      setDistrictError('District is required');
+      return;
+    }
+
+    const postalCodeRegex = /^[0-9]{5}$/;
+    if (!postalCode.match(postalCodeRegex)) {
+      setPostalCodeError('Please enter a valid 5-digit postal code');
+      return;
+    }
+
+    const phoneNumberRegex = /^[0-9]{10}$/;
+    if (!phoneNumber.match(phoneNumberRegex)) {
+      setPhoneNumberError('Please enter a valid 10-digit phone number');
+      return;
+    }
+
+    const addressData = {
+      firstName,
+      lastName,
+      address,
+      city,
+      district,
+      postalcode: postalCode,
+      phoneNum: phoneNumber,
+    };
+
+    const orderData = { address: addressData, navigate };
+    dispatch(createOrder(orderData));
+
+    console.log(addressData);
+  };
+
   return (
-    <div className="flex justify-center items-center h-screen ">
-    <div className="max-w-[40rem] border rounded-md shadow-md p-5 bg-custom-white">
+    <div className="flex justify-center items-center h-screen">
+      <div className="max-w-[40rem] border rounded-md shadow-md p-5 bg-custom-white">
         <form onSubmit={handleSubmit}>
           <Grid container spacing={2}>
             <Grid item xs={12} sm={6}>
-
               <TextField
-                required
-                id='firstname'
-                name='firstname'
-                label='First name'
+                id="firstname"
+                name="firstname"
+                label="First name"
                 fullWidth
-                autoComplete='given-name'
-
+                autoComplete="given-name"
+                value={firstName}
+                onChange={(e) => setFirstName(e.target.value)}
+                error={!!firstNameError}
+                helperText={firstNameError}
               />
-
             </Grid>
 
             <Grid item xs={12} sm={6}>
               <TextField
-                required
-                id='lastname'
-                name='lastname'
-                label='Last name'
+                id="lastname"
+                name="lastname"
+                label="Last name"
                 fullWidth
-                autoComplete='given-name'
+                autoComplete="family-name"
+                value={lastName}
+                onChange={(e) => setLastName(e.target.value)}
+                error={!!lastNameError}
+                helperText={lastNameError}
               />
             </Grid>
 
-            <Grid item xs={12} >
+            <Grid item xs={12}>
               <TextField
-                required
-                id='address'
-                name='address'
-                label='Address'
+                id="address"
+                name="address"
+                label="Address"
                 fullWidth
-                autoComplete='given-name'
+                autoComplete="street-address"
                 multiline
                 rows={3}
-
-              />
-
-            </Grid>
-
-
-            <Grid item xs={12} sm={6}>
-              <TextField
-                required
-                id='city'
-                name='city'
-                label='City'
-                fullWidth
-                autoComplete='given-name'
+                value={address}
+                onChange={(e) => setAddress(e.target.value)}
+                error={!!addressError}
+                helperText={addressError}
               />
             </Grid>
 
             <Grid item xs={12} sm={6}>
               <TextField
-                required
-                id='district'
-                name='district'
-                label='District'
+                id="city"
+                name="city"
+                label="City"
                 fullWidth
-                autoComplete='given-name'
+                autoComplete="address-level2"
+                value={city}
+                onChange={(e) => setCity(e.target.value)}
+                error={!!cityError}
+                helperText={cityError}
               />
             </Grid>
 
             <Grid item xs={12} sm={6}>
               <TextField
-                required
-                id='postalcode'
-                name='postalcode'
-                label='Postal Code'
+                id="district"
+                name="district"
+                label="District"
                 fullWidth
-                autoComplete='given-name'
+                autoComplete="address-level1"
+                value={district}
+                onChange={(e) => setDistrict(e.target.value)}
+                error={!!districtError}
+                helperText={districtError}
               />
             </Grid>
 
+            <Grid item xs={12} sm={6}>
+              <TextField
+                id="postalcode"
+                name="postalcode"
+                label="Postal Code"
+                fullWidth
+                autoComplete="postal-code"
+                value={postalCode}
+                onChange={(e) => setPostalCode(e.target.value)}
+                error={!!postalCodeError}
+                helperText={postalCodeError}
+              />
+            </Grid>
 
             <Grid item xs={12} sm={6}>
               <TextField
-                required
-                id='phoneNumber'
-                name='phoneNumber'
-                label='Phone Number'
+                id="phoneNumber"
+                name="phoneNumber"
+                label="Phone Number"
                 fullWidth
-                autoComplete='given-name'
+                autoComplete="tel"
+                value={phoneNumber}
+                onChange={(e) => setPhoneNumber(e.target.value)}
+                error={!!phoneNumberError}
+                helperText={phoneNumberError}
               />
             </Grid>
           </Grid>
@@ -129,11 +201,8 @@ const DeliveryAddressForm = () => {
             Proceed to Payment
           </button>
         </form>
-   
+      </div>
     </div>
-    </div>
-
-
   );
 };
 
